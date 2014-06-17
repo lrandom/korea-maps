@@ -1,8 +1,8 @@
 #!/bin/bash
 
-# Simplifying Proportion(10%)
+# Simplifying Proportion(3%)
 QUANTIZATION=1e5
-PROPORTION=0.10
+PROPORTION=0.03
 
 # Simplify the original ESRI Shapefile and generates TopoJSON.
 # Map the *_name, *_code columns into name, code.
