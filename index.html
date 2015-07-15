@@ -20,7 +20,7 @@
         var map = new google.maps.Map(document.getElementById("map_canvas"),
             mapOptions);
  
-	$.getJSON('topojson/regions.topojson', function (data) {
+	$.getJSON('output/topojson/regions.topojson', function (data) {
 	    var state_geojson = topojson.object(data, data.objects.state);
 	    var city_geojson = topojson.object(data, data.objects.city);
 	    var dong_geojson = topojson.object(data, data.objects.dong);

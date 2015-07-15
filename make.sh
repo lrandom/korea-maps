@@ -1,26 +1,40 @@
 #!/bin/bash
 
+SOURCE_DIR="output/transformed_shp"
+SIMPLIFIED_TARGET_DIR="output/simplified_shp"
+SQL_TARGET_DIR="output/sql"
+TOPOJON_TARGET_DIR="output/topojson"
+GEOJSON_TARGET_DIR="output/geojson"
+
+# export SHAPE_ENCODING="EUC-KR"
+
 # Simplifying Proportion(3%)
 QUANTIZATION=1e5
-PROPORTION=0.03
+PROPORTION=0.06
 
 # Simplify the original ESRI Shapefile and generates TopoJSON.
 # Map the *_name, *_code columns into name, code.
-topojson -q $QUANTIZATION --simplify-proportion $PROPORTION -o topojson/regions.topojson -p code=code,name=name --shapefile-encoding utf8 -- shp/state.shp shp/city.shp shp/dong.shp
+rm -rf $TOPOJON_TARGET_DIR &> /dev/null
+mkdir -p $TOPOJON_TARGET_DIR &> /dev/null
+topojson -q $QUANTIZATION --simplify-proportion $PROPORTION -o $TOPOJON_TARGET_DIR/regions.topojson -p code=code,name=name --shapefile-encoding UTF-8 -- $SOURCE_DIR/state.shp $SOURCE_DIR/city.shp $SOURCE_DIR/dong.shp
 
 # Generates GeoJSON from TopoJSON
-topojson-geojson topojson/regions.topojson -o geojson/ 
+rm -rf $GEOJSON_TARGET_DIR > /dev/null
+mkdir -p $GEOJSON_TARGET_DIR > /dev/null
+topojson-geojson $TOPOJON_TARGET_DIR/regions.topojson -o $GEOJSON_TARGET_DIR/ 
 
 # Generates ESRI Shapefile from GeoJSON
-rm simplified_shp/* > /dev/null
-ogr2ogr -f "ESRI Shapefile" simplified_shp/state.shp geojson/state.json -lco ENCODING=UTF-8
-ogr2ogr -f "ESRI Shapefile" simplified_shp/city.shp geojson/city.json -lco ENCODING=UTF-8
-ogr2ogr -f "ESRI Shapefile" simplified_shp/dong.shp geojson/dong.json -lco ENCODING=UTF-8
+rm -rf $SIMPLIFIED_TARGET_DIR &> /dev/null
+mkdir -p $SIMPLIFIED_TARGET_DIR &> /dev/null
+ogr2ogr -f "ESRI Shapefile" $SIMPLIFIED_TARGET_DIR/state.shp $GEOJSON_TARGET_DIR/state.json -lco ENCODING=UTF-8
+ogr2ogr -f "ESRI Shapefile" $SIMPLIFIED_TARGET_DIR/city.shp $GEOJSON_TARGET_DIR/city.json -lco ENCODING=UTF-8
+ogr2ogr -f "ESRI Shapefile" $SIMPLIFIED_TARGET_DIR/dong.shp $GEOJSON_TARGET_DIR/dong.json -lco ENCODING=UTF-8
 
 # Generate SQL
-rm sql/* > /dev/null
-shp2pgsql simplified_shp/state.shp region >> sql/region.sql
-shp2pgsql -a simplified_shp/city.shp region >> sql/region.sql
-shp2pgsql -a simplified_shp/dong.shp region >> sql/region.sql
+rm -rf $SQL_TARGET_DIR &> /dev/null
+mkdir -p $SQL_TARGET_DIR &> /dev/null
+shp2pgsql $SIMPLIFIED_TARGET_DIR/state.shp region >> $SQL_TARGET_DIR/region.sql
+shp2pgsql -a $SIMPLIFIED_TARGET_DIR/city.shp region >> $SQL_TARGET_DIR/region.sql
+shp2pgsql -a $SIMPLIFIED_TARGET_DIR/dong.shp region >> $SQL_TARGET_DIR/region.sql
 
-echo "create index region_geom on region using gist(geom);" >> sql/region.sql
+echo "create index region_geom on region using gist(geom);" >> $SQL_TARGET_DIR/region.sql
