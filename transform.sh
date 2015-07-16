@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 SOURCE_DIR="output/merged_shp"
 TARGET_DIR="output/transformed_shp"
