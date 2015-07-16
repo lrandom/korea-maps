@@ -4,8 +4,8 @@ South Korea regional boundary in simplified ESRI Shapefile, GeoJSON, and TopoJSO
 
 
 ## Requirement
- - [postgresql](http://www.postgresql.org/)
  - [GDAL](http://www.gdal.org)
+ - [postgis](http://www.postgis.net/)
  - [topojson](https://github.com/mbostock/topojson)
  - iconv
 
@@ -14,10 +14,10 @@ South Korea regional boundary in simplified ESRI Shapefile, GeoJSON, and TopoJSO
 ### Generating Simplified ESRI Shapefile, GeoJSON, and TopoJSON
 The make.sh shell script simplifies the original shape files and generates to the topojson files using topojson CLI. GeoJSON and ESRI Shapefile are generated from the topojson files.
  - ./maps : Original shape file
- - ./transformed_shp : Transformed shape file
- - ./simplified_shp : Simplified shape file
- - ./topojson : TopoJson
- - ./geojson : GeoJson
+ - ./output/transformed_shp : Transformed shape file
+ - ./output/simplified_shp : Simplified shape file
+ - ./output/topojson : TopoJson
+ - ./output/geojson : GeoJson
 
 ```bash
 $ ./merge.sh # TL_SCCO_CTPRVN.shp, TL_SCCO_SIG.shp, TL_SCCO_EMD.shp data merge
