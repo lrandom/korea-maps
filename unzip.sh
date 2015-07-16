@@ -1,6 +1,6 @@
 #!/bin/sh
 
-SOURCE_DIR="output/merged_shp"
+SOURCE_DIR="./maps"
 
 for f in $(find $SOURCE_DIR -type f -name "*.7z")
 do
