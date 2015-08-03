@@ -10,7 +10,7 @@ GEOJSON_TARGET_DIR="output/geojson"
 
 # Simplifying Proportion(3%)
 QUANTIZATION=1e5
-PROPORTION=0.06
+PROPORTION=0.09
 
 # Simplify the original ESRI Shapefile and generates TopoJSON.
 # Map the *_name, *_code columns into name, code.
