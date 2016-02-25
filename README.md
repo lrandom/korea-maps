@@ -24,6 +24,9 @@ $ ./merge.sh # TL_SCCO_CTPRVN.shp, TL_SCCO_SIG.shp, TL_SCCO_EMD.shp data merge
 $ ./transform.sh # Encoding EUC-KR -> UTF-8 And Change column names.
 $ ./make.sh # Create simplified shp, geojoin, topojson, postgresql query
 ```
+```bash
+$ ./make_build.sh # Create SQL(Postgresql) for building
+```
 
 ### Simplified Regional Boundary on Google Map.
 Visit here(http://www.station3.co.kr/korea-maps).
